@@ -1,0 +1,38 @@
+name: pokemon_app
+description: A simple project for pokemon info.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.3 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #Dart packages
+  equatable: ^2.0.3
+  get_it: ^7.2.0
+  dio: ^4.0.1
+  intl: ^0.17.0
+
+  #Flutter packages
+  flutter_bloc: ^8.0.0
+
+  #Platform plugins
+  location: ^4.3.0
+  share_plus: ^4.0.4
+  flutter_launcher_icons: ^0.9.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+
+flutter:
+
+  uses-material-design: true
