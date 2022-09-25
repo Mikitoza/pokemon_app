@@ -16,6 +16,7 @@ class MainUsecase {
               imgUrl: await _pokemonRepository.getPokemonImage(
                 apiItem.url.getIdFromUrl(),
               ),
+              id: apiItem.url.getIdFromUrl(),
             ),
           )
           .toList(),
@@ -31,6 +32,7 @@ class MainUsecase {
               imgUrl: await _pokemonRepository.getPokemonImage(
                 apiItem.url.getIdFromUrl(),
               ),
+              id: apiItem.url.getIdFromUrl(),
             ),
           )
           .toList(),

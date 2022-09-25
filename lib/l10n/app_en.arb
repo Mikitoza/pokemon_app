@@ -1,3 +1,28 @@
 {
-  "pokemon": "Pokemon App"
+  "pokemon": "Pokemon App",
+  "pokemonName" : "Name : {name}",
+  "@pokemonName" : {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "pokemonTypes" : "Types : {types}",
+  "@pokemonTypes" : {
+    "placeholders": {
+      "types": {}
+    }
+  },
+  "pokemonHeight" : "Height : {height} cm",
+  "@pokemonHeight" : {
+    "placeholders": {
+      "height": {}
+    }
+  },
+  "pokemonWeight" : "Weight : {weight} kg",
+  "@pokemonWeight" : {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "loading": "Loading..."
 }

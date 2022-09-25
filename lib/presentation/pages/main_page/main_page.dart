@@ -5,6 +5,7 @@ import 'package:pokemon_app/l10n/app_localizations.dart';
 import 'package:pokemon_app/presentation/pages/main_page/main_bloc.dart';
 import 'package:pokemon_app/presentation/pages/main_page/main_event.dart';
 import 'package:pokemon_app/presentation/pages/main_page/main_state.dart';
+import 'package:pokemon_app/presentation/pages/pokemon_page/pokemon_page.dart';
 import 'package:pokemon_app/presentation/theme/theme_prodiver.dart';
 import 'package:pokemon_app/presentation/utils/string_ext.dart';
 
@@ -65,38 +66,46 @@ class _MainPageState extends State<MainPage> {
                         child: ListView.builder(
                           itemCount: state.pokemons.length,
                           itemBuilder: (_, index) {
-                            return Card(
-                              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                              child: Column(
-                                children: [
-                                  Image.network(
-                                    state.pokemons[index].imgUrl,
-                                    width: MediaQuery.of(context).size.width * 0.5,
-                                    height: MediaQuery.of(context).size.height * 0.3,
-                                    fit: BoxFit.fill,
-                                    frameBuilder: (BuildContext context, Widget child, int? frame,
-                                            bool wasSynchronouslyLoaded) =>
-                                        wasSynchronouslyLoaded
-                                            ? child
-                                            : AnimatedOpacity(
-                                                opacity: frame == null ? 0 : 1,
-                                                duration: const Duration(seconds: 2),
-                                                curve: Curves.easeOut,
-                                                child: child,
-                                              ),
-                                    loadingBuilder: (context, child, progress) => progress == null
-                                        ? child
-                                        : const CircularProgressIndicator(),
-                                    errorBuilder: (BuildContext context, Object exception,
-                                            StackTrace? stackTrace) =>
-                                        const Text('Failed to load image'),
-                                  ),
-                                  Text(
-                                    state.pokemons[index].title.fromBigChar(),
-                                    style: ThemeProvider.of(context).theme.actionTextStyle,
-                                  ),
-                                  const SizedBox(height: 16)
-                                ],
+                            return GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PokemonPage(id: state.pokemons[index].id),
+                                ),
+                              ),
+                              child: Card(
+                                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                                child: Column(
+                                  children: [
+                                    Image.network(
+                                      state.pokemons[index].imgUrl,
+                                      width: MediaQuery.of(context).size.width * 0.5,
+                                      height: MediaQuery.of(context).size.height * 0.3,
+                                      fit: BoxFit.fill,
+                                      frameBuilder: (BuildContext context, Widget child, int? frame,
+                                              bool wasSynchronouslyLoaded) =>
+                                          wasSynchronouslyLoaded
+                                              ? child
+                                              : AnimatedOpacity(
+                                                  opacity: frame == null ? 0 : 1,
+                                                  duration: const Duration(seconds: 2),
+                                                  curve: Curves.easeOut,
+                                                  child: child,
+                                                ),
+                                      loadingBuilder: (context, child, progress) => progress == null
+                                          ? child
+                                          : const CircularProgressIndicator(),
+                                      errorBuilder: (BuildContext context, Object exception,
+                                              StackTrace? stackTrace) =>
+                                          const Text('Failed to load image'),
+                                    ),
+                                    Text(
+                                      state.pokemons[index].title.fromBigChar(),
+                                      style: ThemeProvider.of(context).theme.actionTextStyle,
+                                    ),
+                                    const SizedBox(height: 16)
+                                  ],
+                                ),
                               ),
                             );
                           },
