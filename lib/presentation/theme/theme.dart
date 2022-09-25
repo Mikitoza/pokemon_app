@@ -10,4 +10,9 @@ const theme = PokemonTheme(
     color: Colors.black54,
     fontSize: PokemonDimens.sizeL,
   ),
+  actionTextStyle: TextStyle(
+    fontSize: PokemonDimens.sizeXXXXL,
+    color: Colors.black38,
+    fontWeight: FontWeight.w300,
+  ),
 );

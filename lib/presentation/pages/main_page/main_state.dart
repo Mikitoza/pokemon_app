@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:pokemon_app/domain/entities/pokemon.dart';
 
 enum MainStateStatus { initial, success, error, loading }
 
@@ -13,14 +14,14 @@ class MainState extends Equatable {
   final MainStateStatus status;
   final int page;
   final int limit;
-  final bool hasNextPage;
-  final List pokemons;
+  final bool isLoadingMore;
+  final List<Pokemon> pokemons;
 
   const MainState({
     this.status = MainStateStatus.initial,
     this.page = 0,
-    this.limit = 20,
-    this.hasNextPage = false,
+    this.limit = 10,
+    required this.isLoadingMore,
     required this.pokemons,
   });
 
@@ -28,15 +29,15 @@ class MainState extends Equatable {
     MainStateStatus? status,
     int? page,
     int? limit,
-    bool? hasNextPage,
-    List? pokemons,
+    List<Pokemon>? pokemons,
+    bool? isLoadingMore,
   }) {
     return MainState(
       status: status ?? this.status,
       page: page ?? this.page,
       limit: limit ?? this.limit,
-      hasNextPage: hasNextPage ?? this.hasNextPage,
       pokemons: pokemons ?? this.pokemons,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     );
   }
 
@@ -45,7 +46,7 @@ class MainState extends Equatable {
         status,
         page,
         limit,
-        hasNextPage,
         pokemons,
+        isLoadingMore,
       ];
 }

@@ -7,12 +7,14 @@ class PokemonTheme extends Equatable {
   final Color primaryBackgroundColor;
   final Color accentBackgroundColor;
   final TextStyle appbarTextStyle;
+  final TextStyle actionTextStyle;
 
   const PokemonTheme({
     required this.primaryColor,
     required this.primaryBackgroundColor,
     required this.accentBackgroundColor,
     required this.appbarTextStyle,
+    required this.actionTextStyle,
   });
 
   @override
@@ -21,5 +23,6 @@ class PokemonTheme extends Equatable {
         primaryBackgroundColor,
         accentBackgroundColor,
         appbarTextStyle,
+        actionTextStyle,
       ];
 }
