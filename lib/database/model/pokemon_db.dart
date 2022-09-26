@@ -1,4 +1,6 @@
-class PokemonDB {
+import 'package:equatable/equatable.dart';
+
+class PokemonDB extends Equatable {
   late int? id;
   late String? name;
   late String? image;
@@ -35,4 +37,14 @@ class PokemonDB {
     height = map['height'];
     type = map['type'];
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        image,
+        weight,
+        height,
+        type,
+      ];
 }

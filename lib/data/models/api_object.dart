@@ -1,4 +1,6 @@
-class ApiObject {
+import 'package:equatable/equatable.dart';
+
+class ApiObject extends Equatable {
   final int count;
   final String? next;
   final String? previous;
@@ -17,6 +19,9 @@ class ApiObject {
         next: json['next'],
         pokemons: (json['results'] as List).map((pokemon) => PokemonApi.fromJson(pokemon)).toList(),
       );
+
+  @override
+  List<Object?> get props => [count, next, previous, pokemons];
 }
 
 class PokemonApi {

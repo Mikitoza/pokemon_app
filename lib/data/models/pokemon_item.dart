@@ -1,4 +1,6 @@
-class PokemonItem {
+import 'package:equatable/equatable.dart';
+
+class PokemonItem extends Equatable {
   final String name;
   final String imageUrl;
   final List<TypesApi> types;
@@ -20,6 +22,15 @@ class PokemonItem {
         imageUrl: json['sprites']['front_default'],
         weight: json['weight'],
       );
+
+  @override
+  List<Object?> get props => [
+        name,
+        imageUrl,
+        types,
+        weight,
+        height,
+      ];
 }
 
 class TypesApi {

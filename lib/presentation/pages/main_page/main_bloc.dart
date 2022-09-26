@@ -38,7 +38,6 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         ),
       );
     }
-    print(state.isOnline);
     if (state.isOnline) {
       try {
         emit(
