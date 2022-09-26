@@ -24,5 +24,6 @@
       "weight": {}
     }
   },
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "cache": "Please,cache some pokemons"
 }

@@ -16,6 +16,7 @@ class PokemonState extends Equatable {
   final int weight;
   final int height;
   final String image;
+  final String errorDesc;
 
   const PokemonState({
     required this.status,
@@ -24,6 +25,7 @@ class PokemonState extends Equatable {
     required this.image,
     required this.types,
     required this.weight,
+    required this.errorDesc,
   });
 
   PokemonState newState({
@@ -33,6 +35,7 @@ class PokemonState extends Equatable {
     int? weight,
     int? height,
     String? image,
+    String? errorDesc,
   }) {
     return PokemonState(
       status: status ?? this.status,
@@ -41,6 +44,7 @@ class PokemonState extends Equatable {
       image: image ?? this.image,
       types: types ?? this.types,
       weight: weight ?? this.weight,
+      errorDesc: errorDesc ?? this.errorDesc,
     );
   }
 
@@ -52,5 +56,6 @@ class PokemonState extends Equatable {
         weight,
         height,
         image,
+        errorDesc,
       ];
 }

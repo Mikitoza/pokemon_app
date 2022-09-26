@@ -12,32 +12,39 @@ extension MainStateStatusX on MainStateStatus {
 
 class MainState extends Equatable {
   final MainStateStatus status;
+  final bool isOnline;
   final int page;
   final int limit;
   final bool isLoadingMore;
   final List<Pokemon> pokemons;
+  final String errorDesc;
 
   const MainState({
     this.status = MainStateStatus.initial,
     this.page = 0,
     this.limit = 10,
+    this.errorDesc = '',
+    this.isOnline = true,
     required this.isLoadingMore,
     required this.pokemons,
   });
 
-  MainState newState({
-    MainStateStatus? status,
-    int? page,
-    int? limit,
-    List<Pokemon>? pokemons,
-    bool? isLoadingMore,
-  }) {
+  MainState newState(
+      {MainStateStatus? status,
+      int? page,
+      int? limit,
+      List<Pokemon>? pokemons,
+      bool? isLoadingMore,
+      String? errorDesc,
+      bool? isOnline}) {
     return MainState(
       status: status ?? this.status,
       page: page ?? this.page,
       limit: limit ?? this.limit,
       pokemons: pokemons ?? this.pokemons,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      errorDesc: errorDesc ?? this.errorDesc,
+      isOnline: isOnline ?? this.isOnline,
     );
   }
 
@@ -48,5 +55,7 @@ class MainState extends Equatable {
         limit,
         pokemons,
         isLoadingMore,
+        errorDesc,
+        isOnline,
       ];
 }

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:pokemon_app/data/datasources/remote_data_source.dart';
 import 'package:pokemon_app/data/models/api_object.dart';
 import 'package:pokemon_app/data/models/pokemon_item.dart';
@@ -27,5 +29,10 @@ class PokemonRepositoryImpl implements PokemonRepository {
   @override
   Future<PokemonItem> getPokemon(int id) async {
     return await _remoteDataSource.getPokemon(id);
+  }
+
+  @override
+  Future<Uint8List> fetchImage(String url) async {
+    return await _remoteDataSource.fetchImage(url);
   }
 }

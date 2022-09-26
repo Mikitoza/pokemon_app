@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_app/domain/usecase/main_usecase.dart';
 import 'package:pokemon_app/presentation/pages/main_page/main_event.dart';
@@ -22,12 +24,54 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     Emitter<MainState> emit,
   ) async {
     emit(state.newState(status: MainStateStatus.loading));
-    emit(
-      state.newState(
-        status: MainStateStatus.success,
-        pokemons: await _mainUsecase.fetchFirstPokemons(),
-      ),
-    );
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      result.isNotEmpty && result[0].rawAddress.isNotEmpty
+          ? null
+          : emit(
+              state.newState(isOnline: false),
+            );
+    } on SocketException catch (_) {
+      emit(
+        state.newState(
+          isOnline: false,
+        ),
+      );
+    }
+    print(state.isOnline);
+    if (state.isOnline) {
+      try {
+        emit(
+          state.newState(
+            status: MainStateStatus.success,
+            pokemons: await _mainUsecase.fetchFirstPokemons(),
+          ),
+        );
+      } catch (_) {
+        emit(
+          state.newState(
+            status: MainStateStatus.error,
+            errorDesc: 'Failed',
+          ),
+        );
+      }
+    } else {
+      try {
+        emit(
+          state.newState(
+            status: MainStateStatus.success,
+            pokemons: await _mainUsecase.fetchPokemonsFromDB(),
+          ),
+        );
+      } catch (_) {
+        emit(
+          state.newState(
+            status: MainStateStatus.error,
+            errorDesc: 'Failed',
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _onLoadMorePokemons(
@@ -35,14 +79,23 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     Emitter<MainState> emit,
   ) async {
     emit(state.newState(isLoadingMore: true));
-    final pokemons = await _mainUsecase.fetchMorePokemons((state.page + 1) * 20);
-    emit(
-      state.newState(
-        isLoadingMore: false,
-        pokemons: state.pokemons..addAll(pokemons),
-        page: state.page + 1,
-        limit: state.limit * (state.page + 1),
-      ),
-    );
+    try {
+      final pokemons = await _mainUsecase.fetchMorePokemons((state.page + 1) * 20);
+      emit(
+        state.newState(
+          isLoadingMore: false,
+          pokemons: state.pokemons..addAll(pokemons),
+          page: state.page + 1,
+          limit: state.limit * (state.page + 1),
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.newState(
+          status: MainStateStatus.error,
+          errorDesc: 'Failed',
+        ),
+      );
+    }
   }
 }
