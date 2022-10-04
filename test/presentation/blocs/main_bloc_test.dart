@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokemon_app/presentation/pages/main_page/main_bloc.dart';
+import 'package:pokemon_app/presentation/pages/main_page/bloc/main_bloc.dart';
 import 'package:pokemon_app/presentation/pages/main_page/main_event.dart';
-import 'package:pokemon_app/presentation/pages/main_page/main_state.dart';
+import 'package:pokemon_app/presentation/pages/main_page/bloc/main_state.dart';
 
 import '../../utils/shared_mocks.mocks.dart';
 

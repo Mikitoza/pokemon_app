@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokemon_app/domain/usecase/main_usecase.dart';
-import 'package:pokemon_app/presentation/pages/main_page/main_event.dart';
-import 'package:pokemon_app/presentation/pages/main_page/main_state.dart';
+import 'package:pokemon_app/data/usecase/main_usecase.dart';
+import 'package:pokemon_app/presentation/pages/main_page/bloc/main_event.dart';
+import 'package:pokemon_app/presentation/pages/main_page/bloc/main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   final MainUsecase _mainUsecase;
@@ -59,7 +59,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         emit(
           state.newState(
             status: MainStateStatus.success,
-            pokemons: await _mainUsecase.fetchPokemonsFromDB(),
+            pokemons: await _mainUsecase.getPokemonsItems(),
           ),
         );
       } catch (_) {

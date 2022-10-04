@@ -1,9 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-abstract class PokemonEvent extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+abstract class PokemonEvent {}
 
 class PokemonInitialize extends PokemonEvent {
   final int id;

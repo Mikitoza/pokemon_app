@@ -1,9 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-abstract class MainEvent extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+abstract class MainEvent {}
 
 class MainGetFirstPokemons extends MainEvent {}
 

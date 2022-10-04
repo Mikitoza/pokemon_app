@@ -2,19 +2,19 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pokemon_app/database/model/pokemon_db.dart';
+import 'package:pokemon_app/data/models/pokemon_db.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBHelper {
   static Database? _db;
-  static const String ID = 'id';
-  static const String NAME = 'name';
-  static const String TYPE = 'type';
-  static const String WEIGHT = 'weight';
-  static const String HEIGHT = 'height';
-  static const String IMAGE = 'image';
-  static const String TABLE = 'pokemonsTable';
-  static const String DB_Name = 'pokemons.db';
+  static const String id = 'id';
+  static const String name = 'name';
+  static const String type = 'type';
+  static const String weight = 'weight';
+  static const String height = 'height';
+  static const String image = 'image';
+  static const String table = 'pokemonsTable';
+  static const String dbName = 'pokemons.db';
 
   Future<Database?> get db async {
     if (null != _db) {
@@ -25,34 +25,33 @@ class DBHelper {
   }
 
   initDB() async {
-    print('object');
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, DB_Name);
+    String path = join(documentsDirectory.path, dbName);
     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
-    print('test');
     return db;
   }
 
   _onCreate(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE $TABLE ($ID INTEGER, $NAME TEXT , $TYPE TEXT, $WEIGHT INTEGER ,$HEIGHT INTEGER, $IMAGE TEXT)');
+      'CREATE TABLE $table ($id INTEGER, $name TEXT , $type TEXT, $weight INTEGER ,$height INTEGER, $image TEXT)',
+    );
   }
 
   Future<PokemonDB> save(PokemonDB pokemonDB) async {
     var dbClient = await db;
-    pokemonDB.id = await dbClient!.insert(TABLE, pokemonDB.toMap());
+    pokemonDB.id = await dbClient!.insert(table, pokemonDB.toMap());
     return pokemonDB;
   }
 
   Future<List<PokemonDB>> getPokemons() async {
     var dbClient = await db;
-    List<Map> maps = await dbClient!.query(TABLE, columns: [
-      ID,
-      NAME,
-      TYPE,
-      WEIGHT,
-      HEIGHT,
-      IMAGE,
+    List<Map> maps = await dbClient!.query(table, columns: [
+      id,
+      name,
+      type,
+      weight,
+      height,
+      image,
     ]);
     List<PokemonDB> photos = [];
     if (maps.isNotEmpty) {

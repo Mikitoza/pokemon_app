@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokemon_app/injector.dart';
+import 'package:pokemon_app/core/ui/utils/string_ext.dart';
+import 'package:pokemon_app/core/ui/widgets/pokemon_dialog.dart';
 import 'package:pokemon_app/l10n/app_localizations.dart';
-import 'package:pokemon_app/presentation/pages/pokemon_page/pokemon_bloc.dart';
-import 'package:pokemon_app/presentation/pages/pokemon_page/pokemon_event.dart';
-import 'package:pokemon_app/presentation/pages/pokemon_page/pokemon_state.dart';
+import 'package:pokemon_app/presentation/pages/pokemon_page/bloc/pokemon_bloc.dart';
+import 'package:pokemon_app/presentation/pages/pokemon_page/bloc/pokemon_event.dart';
+import 'package:pokemon_app/presentation/pages/pokemon_page/bloc/pokemon_state.dart';
 import 'package:pokemon_app/presentation/theme/theme_prodiver.dart';
-import 'package:pokemon_app/presentation/utils/image_util.dart';
-import 'package:pokemon_app/presentation/utils/string_ext.dart';
-import 'package:pokemon_app/presentation/widgets/pokemon_dialog.dart';
+import 'package:pokemon_app/presentation/widgets/pokemon_image.dart';
 
 class PokemonPage extends StatefulWidget {
   final int id;
@@ -24,11 +23,12 @@ class PokemonPage extends StatefulWidget {
 }
 
 class _PokemonPageState extends State<PokemonPage> {
-  final _bloc = locator.get<PokemonBloc>();
+  late final PokemonBloc _bloc;
 
   @override
   void initState() {
     super.initState();
+    _bloc = BlocProvider.of<PokemonBloc>(context);
     _bloc.add(
       PokemonInitialize(
         id: widget.id,
@@ -77,58 +77,31 @@ class _PokemonPageState extends State<PokemonPage> {
               ? const CircularProgressIndicator()
               : Column(
                   children: [
-                    widget.isOnline
-                        ? Image.network(
-                            state.image,
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            height: MediaQuery.of(context).size.height * 0.5,
-                            fit: BoxFit.fill,
-                            frameBuilder: (BuildContext context, Widget child, int? frame,
-                                    bool wasSynchronouslyLoaded) =>
-                                wasSynchronouslyLoaded
-                                    ? child
-                                    : AnimatedOpacity(
-                                        opacity: frame == null ? 0 : 1,
-                                        duration: const Duration(seconds: 2),
-                                        curve: Curves.easeOut,
-                                        child: child,
-                                      ),
-                            loadingBuilder: (context, child, progress) =>
-                                progress == null ? child : const CircularProgressIndicator(),
-                            errorBuilder:
-                                (BuildContext context, Object exception, StackTrace? stackTrace) =>
-                                    const Text('Failed to load image'),
-                          )
-                        : Image.memory(
-                            Utility.dataFromBase64String(
-                              state.image,
-                            ),
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            fit: BoxFit.fill,
-                          ),
-                    Text(
-                      AppLocalizations.of(context)!.pokemonName(state.name.fromBigChar()),
-                      style: ThemeProvider.of(context).theme.actionTextStyle,
+                    PokemonImage(
+                      isOnline: widget.isOnline,
+                      imgUrl: state.image,
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      height: MediaQuery.of(context).size.height * 0.5,
                     ),
-                    Text(
+                    _textLabel(AppLocalizations.of(context)!.pokemonName(state.name.fromBigChar())),
+                    _textLabel(
                       AppLocalizations.of(context)!.pokemonTypes(
                         state.types.map((type) => type.fromBigChar()).join(', '),
                       ),
-                      style: ThemeProvider.of(context).theme.actionTextStyle,
                     ),
-                    Text(
-                      AppLocalizations.of(context)!.pokemonHeight(state.height),
-                      style: ThemeProvider.of(context).theme.actionTextStyle,
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.pokemonWeight(state.weight),
-                      style: ThemeProvider.of(context).theme.actionTextStyle,
-                    ),
+                    _textLabel(AppLocalizations.of(context)!.pokemonHeight(state.height)),
+                    _textLabel(AppLocalizations.of(context)!.pokemonWeight(state.weight)),
                   ],
                 ),
         ),
       ),
+    );
+  }
+
+  Widget _textLabel(String text) {
+    return Text(
+      text,
+      style: ThemeProvider.of(context).theme.actionTextStyle,
     );
   }
 

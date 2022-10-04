@@ -1,5 +1,5 @@
-import 'package:pokemon_app/database/db_helper.dart';
-import 'package:pokemon_app/database/model/pokemon_db.dart';
+import 'package:pokemon_app/data/database/db_helper.dart';
+import 'package:pokemon_app/data/models/pokemon_db.dart';
 
 class LocalDataSource {
   final DBHelper _dbHelper;

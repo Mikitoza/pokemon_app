@@ -1,10 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokemon_app/database/model/pokemon_db.dart';
-import 'package:pokemon_app/domain/usecase/pokemon_usecase.dart';
-import 'package:pokemon_app/presentation/pages/pokemon_page/pokemon_event.dart';
-import 'package:pokemon_app/presentation/pages/pokemon_page/pokemon_state.dart';
-import 'package:pokemon_app/presentation/utils/image_util.dart';
-import 'package:collection/collection.dart';
+import 'package:pokemon_app/core/ui/utils/image_util.dart';
+import 'package:pokemon_app/data/models/pokemon_db.dart';
+import 'package:pokemon_app/data/usecase/pokemon_usecase.dart';
+import 'package:pokemon_app/presentation/pages/pokemon_page/bloc/pokemon_event.dart';
+import 'package:pokemon_app/presentation/pages/pokemon_page/bloc/pokemon_state.dart';
 
 class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
   final PokemonUsecase _pokemonUsecase;
@@ -74,14 +73,16 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
     final isExist = pokemons.firstWhereOrNull((pokemon) => pokemon.name == state.name) != null;
     if (!isExist) {
       final image = await _pokemonUsecase.fetchImage(state.image);
-      await _pokemonUsecase.savePokemon(PokemonDB(
-        state.name,
-        Utility.base64String(image),
-        state.weight,
-        state.height,
-        event.id,
-        state.types.first,
-      ));
+      await _pokemonUsecase.savePokemon(
+        PokemonDB(
+          state.name,
+          Utility.base64String(image),
+          state.weight,
+          state.height,
+          event.id,
+          state.types.first,
+        ),
+      );
       emit(state.newState(status: PokemonStateStatus.success));
     } else {
       emit(
