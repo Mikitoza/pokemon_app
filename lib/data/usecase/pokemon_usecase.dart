@@ -1,7 +1,6 @@
 import 'package:pokemon_app/data/models/pokemon_db.dart';
 import 'package:pokemon_app/data/repositories/pokemon_repository.dart';
-import 'package:pokemon_app/domain/entities/pokemon_detail.dart';
-import 'package:pokemon_app/data/utils/pokemon_item_ext.dart';
+import 'package:pokemon_app/domain/entities/pokemon.dart';
 import 'dart:typed_data';
 
 class PokemonUsecase {
@@ -11,9 +10,8 @@ class PokemonUsecase {
     this._pokemonRepository,
   );
 
-  Future<PokemonDetail> fetchPokemon(int id) async {
-    final pokemon = await _pokemonRepository.fetchPokemon(id);
-    return pokemon.parsePokemonItem();
+  Future<Pokemon> fetchPokemon(int id) async {
+    return await _pokemonRepository.fetchPokemon(id);
   }
 
   Future<void> savePokemon(PokemonDB pokemon) async {
@@ -22,5 +20,9 @@ class PokemonUsecase {
 
   Future<Uint8List> fetchImage(String url) async {
     return await _pokemonRepository.fetchImage(url);
+  }
+
+  Future<List<Pokemon>> fetchPokemons() async {
+    return await _pokemonRepository.fetchFirstPokemonList();
   }
 }

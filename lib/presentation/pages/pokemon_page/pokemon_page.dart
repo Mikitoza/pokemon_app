@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokemon_app/core/injector.dart';
 import 'package:pokemon_app/core/ui/utils/string_ext.dart';
 import 'package:pokemon_app/core/ui/widgets/pokemon_dialog.dart';
 import 'package:pokemon_app/l10n/app_localizations.dart';
@@ -28,7 +29,7 @@ class _PokemonPageState extends State<PokemonPage> {
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of<PokemonBloc>(context);
+    _bloc = locator.get<PokemonBloc>();
     _bloc.add(
       PokemonInitialize(
         id: widget.id,

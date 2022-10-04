@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokemon_app/core/injector.dart';
 import 'package:pokemon_app/core/ui/utils/string_ext.dart';
 import 'package:pokemon_app/core/ui/widgets/pokemon_dialog.dart';
 import 'package:pokemon_app/l10n/app_localizations.dart';
@@ -22,7 +23,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    _bloc = BlocProvider.of<MainBloc>(context);
+    _bloc = locator.get<MainBloc>();
     _bloc.add(MainGetFirstPokemons());
     super.initState();
   }
@@ -87,12 +88,12 @@ class _MainPageState extends State<MainPage> {
                                     children: [
                                       PokemonImage(
                                         isOnline: state.isOnline,
-                                        imgUrl: state.pokemons[index].imgUrl,
+                                        imgUrl: state.pokemons[index].imageUrl,
                                         width: MediaQuery.of(context).size.width * 0.5,
                                         height: MediaQuery.of(context).size.height * 0.3,
                                       ),
                                       Text(
-                                        state.pokemons[index].title.fromBigChar(),
+                                        state.pokemons[index].name.fromBigChar(),
                                         style: ThemeProvider.of(context).theme.actionTextStyle,
                                       ),
                                       const SizedBox(height: 16)

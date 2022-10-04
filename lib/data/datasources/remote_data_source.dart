@@ -8,14 +8,14 @@ class RemoteDataSource {
   final _dio = Dio();
   final _baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
-  Future<ApiObject> getFirstPokemonList() async {
+  Future<ApiObject> fetchFirstPokemonList() async {
     final Response response = await _dio.get(_baseUrl);
 
     ApiObject apiObject = ApiObject.fromJson(response.data);
     return apiObject;
   }
 
-  Future<ApiObject> getPokemonList(int offset) async {
+  Future<ApiObject> fetchPokemonList(int offset) async {
     final Response response = await _dio.get(
       _baseUrl,
       queryParameters: {
@@ -28,7 +28,7 @@ class RemoteDataSource {
     return apiObject;
   }
 
-  Future<PokemonItem> getPokemon(int id) async {
+  Future<PokemonItem> fetchPokemon(int id) async {
     final Response response = await _dio.get(
       '$_baseUrl/$id/',
     );

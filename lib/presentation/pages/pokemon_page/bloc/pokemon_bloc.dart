@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_app/core/ui/utils/image_util.dart';
 import 'package:pokemon_app/data/models/pokemon_db.dart';
@@ -50,7 +51,7 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         );
       }
     } else {
-      final pokemon = await _pokemonUsecase.getPokemonFromDBPokemon(event.id);
+      final pokemon = await _pokemonUsecase.fetchPokemon(event.id);
       emit(
         state.newState(
           status: PokemonStateStatus.success,
@@ -69,7 +70,7 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
     Emitter<PokemonState> emit,
   ) async {
     emit(state.newState(status: PokemonStateStatus.loading));
-    final pokemons = await _pokemonUsecase.getPokemonsFromDBPokemon();
+    final pokemons = await _pokemonUsecase.fetchPokemons();
     final isExist = pokemons.firstWhereOrNull((pokemon) => pokemon.name == state.name) != null;
     if (!isExist) {
       final image = await _pokemonUsecase.fetchImage(state.image);

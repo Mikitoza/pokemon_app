@@ -59,7 +59,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         emit(
           state.newState(
             status: MainStateStatus.success,
-            pokemons: await _mainUsecase.getPokemonsItems(),
+            pokemons: await _mainUsecase.fetchFirstPokemons(),
           ),
         );
       } catch (_) {

@@ -3,10 +3,11 @@ import 'dart:typed_data';
 import 'package:pokemon_app/core/platform/network_info.dart';
 import 'package:pokemon_app/data/datasources/local_data_source.dart';
 import 'package:pokemon_app/data/datasources/remote_data_source.dart';
-import 'package:pokemon_app/data/models/api_object.dart';
 import 'package:pokemon_app/data/models/pokemon_db.dart';
-import 'package:pokemon_app/data/models/pokemon_item.dart';
 import 'package:pokemon_app/data/utils/pokemon_db_ext.dart';
+import 'package:pokemon_app/data/utils/pokemon_item_ext.dart';
+import 'package:pokemon_app/domain/entities/pokemon.dart';
+import 'package:pokemon_app/domain/utils/string_ext.dart';
 
 class PokemonRepository {
   final LocalDataSource _localDataSource;
@@ -23,30 +24,35 @@ class PokemonRepository {
     await _localDataSource.save(pokemonDB);
   }
 
-  Future<List<PokemonApi>> fetchFirstPokemonList() async {
+  Future<List<Pokemon>> fetchFirstPokemonList() async {
     if (await _networkInfo.isConnected) {
-      return (await _remoteDataSource.getFirstPokemonList()).pokemons;
+      return Future.wait((await _remoteDataSource.fetchFirstPokemonList())
+          .pokemons
+          .map((pokemon) => fetchPokemon(pokemon.url.getIdFromUrl()))
+          .toList());
     } else {
       return (await _localDataSource.getPokemons())
           .map(
-            (pokemon) => PokemonApi(name: pokemon.name!, url: 'url'),
+            (pokemon) => pokemon.parsePokemonDb(),
           )
           .toList();
     }
   }
 
   Future<String> fetchPokemonImageUrl(int id) async {
-    return (await _remoteDataSource.getPokemon(id)).imageUrl;
+    return (await _remoteDataSource.fetchPokemon(id)).imageUrl;
   }
 
-  Future<List<PokemonApi>> fetchPokemonList(int offset) async {
-    final pokemons = (await _remoteDataSource.getPokemonList(offset)).pokemons;
-    return pokemons;
+  Future<List<Pokemon>> fetchPokemonList(int offset) async {
+    return Future.wait((await _remoteDataSource.fetchPokemonList(offset))
+        .pokemons
+        .map((pokemon) => fetchPokemon(pokemon.url.getIdFromUrl()))
+        .toList());
   }
 
-  Future<PokemonItem> fetchPokemon(int id) async {
+  Future<Pokemon> fetchPokemon(int id) async {
     if (await _networkInfo.isConnected) {
-      return await _remoteDataSource.getPokemon(id);
+      return (await _remoteDataSource.fetchPokemon(id)).parsePokemonItem(id);
     } else {
       final pokemons = await _localDataSource.getPokemons();
       return pokemons.firstWhere((pokemon) => pokemon.id == id).parsePokemonDb();
@@ -55,28 +61,5 @@ class PokemonRepository {
 
   Future<Uint8List> fetchImage(String url) async {
     return await _remoteDataSource.fetchImage(url);
-  }
-
-  Future<List<PokemonItem>> getPokemonsItems() async {
-    final pokemons = await _localDataSource.getPokemons();
-    return pokemons
-        .map(
-          (pokemon) => PokemonItem(
-            name: pokemon.name!,
-            weight: pokemon.weight!,
-            types: [
-              TypesApi(
-                slot: 0,
-                type: Type(
-                  name: pokemon.type!,
-                  url: 'url',
-                ),
-              ),
-            ],
-            height: pokemon.height!,
-            imageUrl: pokemon.image!,
-          ),
-        )
-        .toList();
   }
 }
