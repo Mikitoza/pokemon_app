@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokemon_app/data/usecase/main_usecase.dart';
+import 'package:pokemon_app/domain/usecase/main_usecase.dart';
 import 'package:pokemon_app/presentation/pages/main_page/bloc/main_event.dart';
 import 'package:pokemon_app/presentation/pages/main_page/bloc/main_state.dart';
 

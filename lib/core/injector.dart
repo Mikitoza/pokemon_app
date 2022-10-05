@@ -5,8 +5,9 @@ import 'package:pokemon_app/data/database/db_helper.dart';
 import 'package:pokemon_app/data/datasources/local_data_source.dart';
 import 'package:pokemon_app/data/datasources/remote_data_source.dart';
 import 'package:pokemon_app/data/repositories/pokemon_repository.dart';
-import 'package:pokemon_app/data/usecase/main_usecase.dart';
-import 'package:pokemon_app/data/usecase/pokemon_usecase.dart';
+import 'package:pokemon_app/domain/repositories/pokemon_repository.dart';
+import 'package:pokemon_app/domain/usecase/main_usecase.dart';
+import 'package:pokemon_app/domain/usecase/pokemon_usecase.dart';
 import 'package:pokemon_app/presentation/app/bloc/app_bloc.dart';
 import 'package:pokemon_app/presentation/pages/main_page/bloc/main_bloc.dart';
 import 'package:pokemon_app/presentation/pages/pokemon_page/bloc/pokemon_bloc.dart';
@@ -42,7 +43,7 @@ void _setUpDataSources() async {
 
 void _setUpRepositories() async {
   locator.registerFactory<PokemonRepository>(
-    () => PokemonRepository(
+    () => PokemonRepositoryImpl(
       locator.get<RemoteDataSource>(),
       locator.get<LocalDataSource>(),
       locator.get<NetworkInfo>(),

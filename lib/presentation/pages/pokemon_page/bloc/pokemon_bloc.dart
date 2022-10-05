@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_app/core/ui/utils/image_util.dart';
 import 'package:pokemon_app/data/models/pokemon_db.dart';
-import 'package:pokemon_app/data/usecase/pokemon_usecase.dart';
+import 'package:pokemon_app/domain/usecase/pokemon_usecase.dart';
 import 'package:pokemon_app/presentation/pages/pokemon_page/bloc/pokemon_event.dart';
 import 'package:pokemon_app/presentation/pages/pokemon_page/bloc/pokemon_state.dart';
 
